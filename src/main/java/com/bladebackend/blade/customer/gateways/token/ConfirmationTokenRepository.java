@@ -1,4 +1,4 @@
-package com.bladebackend.blade.registration.token;
+package com.bladebackend.blade.customer.gateways.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

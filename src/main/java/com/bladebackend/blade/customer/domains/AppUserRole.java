@@ -1,4 +1,4 @@
-package com.bladebackend.blade.appuser;
+package com.bladebackend.blade.customer.domains;
 
 public enum AppUserRole {
     USER,

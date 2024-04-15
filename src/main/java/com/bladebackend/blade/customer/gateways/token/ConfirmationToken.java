@@ -1,6 +1,6 @@
-package com.bladebackend.blade.registration.token;
+package com.bladebackend.blade.customer.gateways.token;
 
-import com.bladebackend.blade.appuser.AppUser;
+import com.bladebackend.blade.customer.domains.AppUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

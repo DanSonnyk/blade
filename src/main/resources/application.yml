@@ -5,15 +5,14 @@ server:
 
 spring:
   datasource:
-    password:
-    url: jdbc:postgresql://localhost:5432/blade
-    username:
+    url: jdbc:mysql://localhost:3306/blade
+    password: root
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+      database-platform: org.hibernate.dialect.MySQL8Dialect
       hibernate:
         ddl-auto: create-drop
-      proprieties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
       show-sql: true
 
   mail:

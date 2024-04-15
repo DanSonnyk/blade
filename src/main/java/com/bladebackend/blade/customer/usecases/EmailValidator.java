@@ -1,4 +1,4 @@
-package com.bladebackend.blade.registration;
+package com.bladebackend.blade.customer.usecases;
 
 import org.springframework.stereotype.Service;
 import java.util.function.Predicate;

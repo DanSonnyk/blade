@@ -1,4 +1,4 @@
-package com.bladebackend.blade.registration.token;
+package com.bladebackend.blade.customer.gateways.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,5 +22,9 @@ public class ConfirmationTokenService {
     public void setConfirmedAt(String token){
         confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
+    }
+
+    public void deleteById(long id){
+        confirmationTokenRepository.deleteById(id);
     }
 }

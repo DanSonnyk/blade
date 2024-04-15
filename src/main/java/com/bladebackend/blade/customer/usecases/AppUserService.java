@@ -1,7 +1,9 @@
-package com.bladebackend.blade.appuser;
+package com.bladebackend.blade.customer.usecases;
 
-import com.bladebackend.blade.registration.token.ConfirmationToken;
-import com.bladebackend.blade.registration.token.ConfirmationTokenService;
+import com.bladebackend.blade.customer.domains.AppUser;
+import com.bladebackend.blade.customer.gateways.AppUserRepository;
+import com.bladebackend.blade.customer.gateways.token.ConfirmationToken;
+import com.bladebackend.blade.customer.gateways.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +18,6 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class AppUserService implements UserDetailsService {
-
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -36,15 +37,16 @@ public class AppUserService implements UserDetailsService {
 
         appUserRepository.save(appUser);
     }
-
     public String signUpUser(AppUser appUser){
-        final boolean userNotExists = appUserRepository.findByEmail(appUser.getEmail())
-                .isEmpty();
-        if (!userNotExists){
-
-            //TODO if is the same user and email not confirmed send confirmation email again
-
-            throw new IllegalStateException("Email Already Taken");
+        Optional<AppUser> user = appUserRepository.findByEmail(appUser.getEmail());
+        if (user.isPresent()){
+            AppUser existentUser = user.stream().findFirst().get();
+            if(existentUser.getEnable()){
+                throw new IllegalStateException("Email Already Taken");
+            }else {
+                confirmationTokenService.deleteById(existentUser.getId());
+                appUserRepository.delete(existentUser);
+            }
         }
 
         final String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
@@ -62,11 +64,7 @@ public class AppUserService implements UserDetailsService {
                 appUser
         );
 
-
         confirmationTokenService.saveConfirmationToken(confirmationToken);
-
-        //TODO: SEND EMAIL
-
         return token;
     }
 }

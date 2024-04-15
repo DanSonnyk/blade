@@ -1,22 +1,18 @@
-package com.bladebackend.blade.registration;
+package com.bladebackend.blade.customer.usecases;
 
-import com.bladebackend.blade.appuser.AppUser;
-import com.bladebackend.blade.appuser.AppUserRole;
-import com.bladebackend.blade.appuser.AppUserService;
-import com.bladebackend.blade.email.EmailSender;
-import com.bladebackend.blade.email.EmailService;
-import com.bladebackend.blade.registration.token.ConfirmationToken;
-import com.bladebackend.blade.registration.token.ConfirmationTokenService;
+import com.bladebackend.blade.customer.domains.AppUser;
+import com.bladebackend.blade.customer.domains.RegistrationRequest;
+import com.bladebackend.blade.customer.gateways.token.ConfirmationToken;
+import com.bladebackend.blade.customer.gateways.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
 public class RegistrationService {
+    public static final String URL_VALIDATE = "http://localhost:8080/api/v1/auth/confirm?token=";
     private final EmailValidator emailValidator;
     private final AppUserService appUserService;
     private final ConfirmationTokenService confirmationTokenService;
@@ -29,16 +25,18 @@ public class RegistrationService {
             throw new IllegalStateException("Email not valid.");
         }
         final String token = appUserService.signUpUser(
-                new AppUser(
-                        request.getFirstName(),
-                        request.getLastName(),
-                        request.getEmail(),
-                        request.getPassword(),
-                        AppUserRole.USER
-                )
+                AppUser
+                    .builder()
+                        .name(request.getName())
+                        .email(request.getEmail())
+                        .password(request.getPassword())
+                        .appUserRole(request.getAppUserRole())
+                        .enable(false)
+                        .locked(false)
+                    .build()
         );
-        String link = "http://localhost:8080/api/v1/registration/confirm?token="+token;
-        emailSender.send(request.getEmail(),buildEmail(request.getFirstName(), link));
+        String link = URL_VALIDATE +token;
+        emailSender.send(request.getEmail(),buildEmail(request.getName(), link));
         return token;
     }
 

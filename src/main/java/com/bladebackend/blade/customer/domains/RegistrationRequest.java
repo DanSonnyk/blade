@@ -1,4 +1,4 @@
-package com.bladebackend.blade.registration;
+package com.bladebackend.blade.customer.domains;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -10,8 +10,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
-    private final String firstName;
-    private final String lastName;
+    private final String name;
     private final String email;
     private final String password;
+    private final AppUserRole appUserRole;
+
 }

@@ -1,4 +1,4 @@
-package com.bladebackend.blade.email;
+package com.bladebackend.blade.customer.usecases;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

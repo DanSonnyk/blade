@@ -1,5 +1,6 @@
-package com.bladebackend.blade.appuser;
+package com.bladebackend.blade.customer.gateways;
 
+import com.bladebackend.blade.customer.domains.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
