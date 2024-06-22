@@ -1,5 +1,6 @@
 package com.bladebackend.blade.customer.domains;
 
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,5 +15,4 @@ public class RegistrationRequest {
     private final String email;
     private final String password;
     private final AppUserRole appUserRole;
-
 }

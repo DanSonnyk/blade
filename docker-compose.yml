@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      DATABASE_HOST: docker-mysql
+      DATABASE_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blade
+    ports:
+      - "3306:3306"
+
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:80"  # Port to access mail-dev interface
+      - "1025:25" # Port to access SMTP service
+
+  spring-app:
+    image: blade-app
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/blade
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+      - maildev
+    restart: on-failure
+
+
